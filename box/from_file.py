@@ -67,6 +67,7 @@ def _to_msgpack(file, _, __, **kwargs):
     if not msgpack_available:
         raise BoxError(f'File "{file}" is msgpack but no package is available to open it. Please install "msgpack"')
     try:
+        
         return Box.from_msgpack(filename=file, **kwargs)
     except (UnpackException, ValueError):
         raise BoxError("File is not msgpack as expected")
@@ -82,6 +83,7 @@ converters = {
     "toml": _to_toml,
     "tml": _to_toml,
     "msgpack": _to_msgpack,
+    
     "pack": _to_msgpack,
     "csv": _to_csv,
 }  # type: Dict[str, Callable]
@@ -109,6 +111,7 @@ def box_from_file(
     if not file.exists():
         raise BoxError(f'file "{file}" does not exist')
     file_type = file_type or file.suffix
+    
     file_type = file_type.lower().lstrip(".")
     if file_type.lower() in converters:
         return converters[file_type.lower()](file, encoding, errors, **kwargs)  # type: ignore
